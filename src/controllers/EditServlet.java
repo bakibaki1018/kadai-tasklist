@@ -21,7 +21,8 @@ public class EditServlet extends HttpServlet {
         super();
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         EntityManager em = DBUtil.createEntityManager();
 
         // 該当のIDのタスク1件をデータベースから取得
@@ -33,12 +34,13 @@ public class EditServlet extends HttpServlet {
         request.setAttribute("task", t);
         request.setAttribute("_token", request.getSession().getId());
 
+        //タスクデーターが存在しているときのみ
         // タスクIDをセッションスコープに登録
-        request.getSession().setAttribute("task_id", t.getId());
+        if (t != null) {
+            request.getSession().setAttribute("task_id", t.getId());
+        }
 
         RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/tasks/edit.jsp");
         rd.forward(request, response);
     }
-    }
-
-
+}
